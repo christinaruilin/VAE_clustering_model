@@ -204,8 +204,19 @@ saveRDS(obj_filtered, file = "obj_filtered_with_gene_activity.rds")
 message("Heatmap and filtered Seurat object saved.")
 
 obj_filtered <- RunUMAP(obj_filtered, reduction = "vae", dims = 1:10)
-umap_plot <- DimPlot(obj_filtered, reduction = "umap", group.by = "vae_clusters") +
-  ggtitle("UMAP (VAE clusters)")
+library(ggplot2)
+umap_plot <- DimPlot(
+  obj_filtered,
+  reduction = "umap",
+  group.by = "vae_clusters",
+  label = TRUE,            
+  label.size = 4,          
+  repel = TRUE            
+) + ggtitle("UMAP (VAE clusters)") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 14)
+  )
 ggsave(
   filename = "08_initial_umap_clusters_VAE_newPreprocessing.png",
   plot = umap_plot,
